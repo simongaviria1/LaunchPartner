@@ -29,6 +29,7 @@ function logoutUser(req, res, next) {
 };
 
 function getUser(req, res, next) {
+    // console.log('get user')
     db
         .one("SELECT * FROM users WHERE username=${username}", {username: req.user.username})
         .then(data => {
@@ -39,7 +40,6 @@ function getUser(req, res, next) {
 };
 
 // user Profile functions
-
 function editUserProfile(req, res, next) {
     db
         .none("UPDATE users SET email=${email}, fullname=${fullName}, stack=${stack}, username=" +

@@ -14,7 +14,10 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
   return;
 });
 
-router.get("/getLoggedinUser", loginRequired, db.getUser);
+router.get("/hi", function () {
+  console.log( 'Hello there')
+});
 
+router.get("/getLoggedinUser", loginRequired, db.getUser);
 
 module.exports = router;
