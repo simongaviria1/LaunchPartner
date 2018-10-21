@@ -3,7 +3,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const db = require("../db/index");
 const init = require("./passport");
-const authHelpers = require("./helpers");
+const authHelpers = require("./helper");
 const debug = require("debug")("auth:local");
 
 const options = {};
