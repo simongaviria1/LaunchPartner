@@ -1,9 +1,19 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+const {loginRequired} = require("../auth/helpers");
+const passport = require("../auth/local");
+const db = require("../db/queries");
+
+// USER LOGIN ROUTES
+router.post("/login", passport.authenticate("local"), (req, res) => {
+  // console.log('this is what the DB returned', req.user);
+  res
+    .status(200)
+    .json({user: req.user, message: `${req.user.username} is logged in`});
+  return;
 });
+router.get("/getLoggedinUser", loginRequired, db.getUser);
+
 
 module.exports = router;
