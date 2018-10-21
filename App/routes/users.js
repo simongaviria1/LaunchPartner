@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const {loginRequired} = require("../auth/helpers");
+const {loginRequired} = require("../auth/helper");
 const passport = require("../auth/local");
 const db = require("../db/queries");
 
