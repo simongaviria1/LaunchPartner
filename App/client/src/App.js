@@ -9,6 +9,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      user: null,
       username: 'simongaviria',
       bio: 'I am a developer',
       profilePic: 'https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/44225876_10160995280085646_6176365' +
@@ -16,6 +17,17 @@ class App extends Component {
           'df0ed6376ad&oe=5C5023C4',
       edit: false
     }
+  }
+
+  handleLogin = () => {
+    const {user} = this.state;
+    return (user
+      ? <Redirect to='/dashboard'/>
+      : <Redirect to='/login'/>)
+  }
+
+  renderLogin = () => {
+    return <Login/>
   }
 
   renderDashboard = () => {
@@ -38,8 +50,9 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Route exact path="/" component={this.renderDashboard}/>
-          <Route path="/login" component={< Login />}/>
+          <Route exact path="/" component={this.handleLogin}/>
+          <Route path="/dashboard" component={this.renderDashboard}/>
+          <Route path="/login" component={this.renderLogin}/>
         </div>
       </Router>
     )
