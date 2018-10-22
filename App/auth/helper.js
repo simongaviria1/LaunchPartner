@@ -14,25 +14,19 @@ function createHash(password) {
 function createUser(req) {
     const salt = bcrypt.genSaltSync();
     const hash = bcrypt.hashSync(req.body.password, salt);
-    return db.none(
-      "INSERT INTO users (username, password_digest, email, fullName) VALUES (${username}, ${password}, ${email}, ${fullName})",
-      {
+    return db.none("INSERT INTO users (username, password_digest, fullName) VALUES (${usernam" +
+            "e}, ${password}, ${fullName})", {
         username: req.body.username,
         password: hash,
-        email: req.body.email,
         fullName: req.body.fullName
-      }
-    );
-  } 
-
+    });
+}
 
 function loginRequired(req, res, next) {
-    
-    if(!req.user) {
-        res.status(401)
-        .json({
-            status: "Please log in."
-        });
+    if (!req.user) {
+        res
+            .status(401)
+            .json({status: "Please log in."});
         return;
     }
     next();
@@ -41,6 +35,6 @@ function loginRequired(req, res, next) {
 module.exports = {
     comparePass,
     createHash,
-    loginRequired, 
+    loginRequired,
     createUser
 };
