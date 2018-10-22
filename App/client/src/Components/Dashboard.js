@@ -1,33 +1,37 @@
 import React, {Component} from 'react';
 import {Route, Redirect} from 'react-router'
 
-import DashboardEdit from './DashboardEdit'
+import ProfileEdit from './ProfileEdit'
+
+import '../Style/Profile.css'
+
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 class Dashboard extends Component {
     constructor() {
         super();
-        this.state = {
-
-        }
+        this.state = {}
     }
 
     render() {
         const {username, profilePic, bio, toggleEdit, edit} = this.props
 
         return (
+                edit? <ProfileEdit /> :
             <div>
-                {edit
-                    ? <DashboardEdit toggleEdit={toggleEdit}/>
-                    : <div>
-                        <img src={profilePic}/>
-                        <h1>{username}</h1>
-                        <p>{bio}</p>
-                        <h1>Hello from Dashboard</h1>
+                <div>
+                        <Paper elevation={1}>
+                            <img id='profilePic' src={profilePic}/>
+                            <div id='user_profile'>
+                                <h1>{username}</h1>
+                                <p>{bio}</p>
+                            </div>
 
-                        <button onClick={toggleEdit}>
-                            Edit Profile</button>
-                    </div>
-}
+                            <button onClick={toggleEdit}>
+                                Edit Profile</button>
+                        </Paper>
+                    </div>}
 
             </div>
         )
