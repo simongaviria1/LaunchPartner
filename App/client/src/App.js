@@ -3,8 +3,10 @@ import {Route, Redirect, BrowserRouter as Router} from 'react-router-dom'
 
 import Profile from './Components/Profile'
 import ProfileEdit from './Components/ProfileEdit'
+import Dashboard from './Components/Dashboard'
 import Login from './Components/UserAuth/Login'
 
+import './Style/gen.css'
 import SideNav, {Toggle, Nav, NavItem, NavIcon, NavText} from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
@@ -55,6 +57,10 @@ class App extends Component {
       toggleEdit={this.toggleEdit}/>
   }
 
+  renderDashboard = () => {
+    return <Dashboard/>
+  }
+
   renderProfileEdit = () => {
     return <ProfileEdit/>
   }
@@ -71,7 +77,8 @@ class App extends Component {
         <Route
           render={({location, history}) => (
           <React.Fragment>
-            <SideNav
+          {this.state.user ?   <SideNav 
+            id='nav'
               onSelect={(selected) => {
               const to = '/' + selected;
               if (location.pathname !== to) {
@@ -82,11 +89,7 @@ class App extends Component {
               <SideNav.Nav defaultSelected="dash">
                 <NavItem eventKey="dashboard">
                   <NavIcon>
-                    <i
-                      className="fa fa-fw fa-home"
-                      style={{
-                      fontSize: '1.75em'
-                    }}/>
+                    <i class="fas fa-home"></i>
                   </NavIcon>
                   <NavText>
                     Dashboard
@@ -94,18 +97,14 @@ class App extends Component {
                 </NavItem>
                 <NavItem eventKey="profile">
                   <NavIcon>
-                    <i
-                      className="fa fa-fw fa-device"
-                      style={{
-                      fontSize: '1.75em'
-                    }}/>
+                  <i class="fas fa-user"></i>
                   </NavIcon>
                   <NavText>
                     Profile
                   </NavText>
                 </NavItem>
               </SideNav.Nav>
-            </SideNav>
+            </SideNav>: ''}
             <main>
               <Route exact path="/" component={this.handleLogin}/>
               <Route path="/dashboard" component={this.renderDashboard}/>

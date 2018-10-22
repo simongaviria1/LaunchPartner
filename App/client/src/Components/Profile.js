@@ -28,8 +28,10 @@ class Profile extends Component {
                                 <p>{bio}</p>
                             </div>
 
-                            <button onClick={toggleEdit}>
-                                Edit Profile</button>
+                            <div>
+                                <button onClick={toggleEdit}>
+                                Edit Profile</button> 
+                            </div>
                         </Paper>
                     </div>}
 
