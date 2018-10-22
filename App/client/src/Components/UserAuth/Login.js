@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-
 import {Link, Route} from 'react-router-dom';
 
 import axios from 'axios'
+import TextField from '@material-ui/core/TextField';
 
 class Login extends Component {
     constructor() {
@@ -38,12 +38,21 @@ class Login extends Component {
         return (
             <div>
                 <form onSubmit={this.submit}>
-                    <input
-                        type='text'
+                    <TextField
+                        id="standard-name"
+                        label="User Name"
+                        margin="normal"
                         name='username'
-                        placeholder='username'
                         onChange={this.handleChange}/>
-                    <input type='password' name='password' placeholder='password' onChange={this.handleChange}/>
+                    <br></br>
+                    <TextField
+                        id="standard-name"
+                        label='password'
+                        type='password'
+                        margin="normal"
+                        name='password'
+                        onChange={this.handleChange}/>
+                    <br></br>
                     <button onClick={this.submit}>Login</button>
                 </form>
 

@@ -64,9 +64,9 @@ function editUserProfile(req, res, next) {
         })
 }
 
-function getUserProfile(req, res, next) {
+function getProfiles(req, res, next) {
     db
-        .any("SELECT username, profile_pic, bio FROM users WHERE username=${username}", {username: req.params.username})
+        .any("SELECT username, profile_pic, bio FROM users")
         .then(data => {
             res
                 .status(200)
@@ -93,7 +93,7 @@ module.exports = {
     createUser,
     logoutUser,
     getUser,
-    getUserProfile,
+    getProfiles,
     editUserProfile,
     getUserID
 };
