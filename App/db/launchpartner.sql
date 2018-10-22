@@ -11,7 +11,7 @@ CREATE TABLE users (
     fullName VARCHAR,
     username VARCHAR UNIQUE,
     password_digest VARCHAR,
-    profile_Pic VARCHAR DEFAULT 'https://image.flaticon.com/icons/svg/16/16480.svg',
+    profile_pic VARCHAR DEFAULT 'https://image.flaticon.com/icons/svg/16/16480.svg',
     bio VARCHAR
 );
 

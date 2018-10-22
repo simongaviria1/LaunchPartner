@@ -66,7 +66,7 @@ function editUserProfile(req, res, next) {
 
 function getUserProfile(req, res, next) {
     db
-        .any("SELECT * FROM users WHERE username=${username}", {username: req.params.username})
+        .any("SELECT username, profile_pic, bio FROM users WHERE username=${username}", {username: req.params.username})
         .then(data => {
             res
                 .status(200)
