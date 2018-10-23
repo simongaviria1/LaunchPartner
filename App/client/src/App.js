@@ -64,7 +64,8 @@ class App extends Component {
     if (!user) {
       return <Redirect to='/login'/>
     } else {
-      return (<Profile logOut={this.logOut}
+      return (<Profile
+        logOut={this.logOut}
         user={user}
         logOut={this.logOut}
         toggleEdit={this.toggleEdit}
@@ -73,7 +74,12 @@ class App extends Component {
   }
 
   renderDashboard = () => {
-    return <Dashboard/>
+    const {user, loading, edit} = this.state
+    if (!user) {
+      return <Redirect to='/login'/>
+    } else {
+      return <Dashboard logOut={this.logOut}/>
+    }
   }
 
   renderProfileEdit = () => {

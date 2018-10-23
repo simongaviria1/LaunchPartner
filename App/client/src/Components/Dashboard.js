@@ -29,10 +29,17 @@ class Dashboard extends Component {
     }
 
     render() {
-        const {username, profilePic, bio, toggleEdit, edit} = this.props
+        const {
+            username,
+            profilePic,
+            bio,
+            toggleEdit,
+            logOut,
+            edit
+        } = this.props
         return (
             <div>
-                <Nav/>
+                <Nav logOut={logOut}/>
                 <div>
                     <div id='container'>
                         {this

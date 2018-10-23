@@ -1,3 +1,9 @@
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'client/build'))); //this is the only thing that's different - 'client/build'
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -39,6 +45,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

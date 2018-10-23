@@ -1,18 +1,3 @@
-// import React, {Component} from 'react'; import {Link} from
-// "react-router-dom"; import PropTypes from 'prop-types'; import {withStyles}
-// from '@material-ui/core/styles'; import BottomNavigation from
-// '@material-ui/core/BottomNavigation'; import BottomNavigationAction from
-// '@material-ui/core/BottomNavigationAction'; import RestoreIcon from
-// '@material-ui/icons/Restore'; import FavoriteIcon from
-// '@material-ui/icons/Favorite'; import LocationOnIcon from
-// '@material-ui/icons/LocationOn'; class Nav extends Component { 		render() {
-// 				return ( 						<div className='header'> 								<div
-// className='header-portfolio'> 										<Link to={'/profile'}>
-// 												Profile 										</Link> 								</div> 								<div
-// className='header-transactions'> 										<Link to={'/dashboard'}>
-// 												Dashboard 										</Link> 								</div> 						</div> 				);
-// 		} } export default Nav;
-
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
