@@ -6,7 +6,7 @@ const db = require("../db/queries");
 
 // USER LOGIN ROUTES
 router.post("/login", passport.authenticate("local"), (req, res) => {
-  // console.log('this is what the DB returned', req.user);
+  console.log('this is what the DB returned', req.user);
   res
     .status(200)
     .json({user: req.user, message: `${req.user.username} is logged in`});
@@ -16,6 +16,7 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
 router.post("/new", db.createUser);
 router.get("/logout", loginRequired, db.logoutUser);
 router.get("/getLoggedinUser", loginRequired, db.getUser);
-router.get("/getProfiles", db.getProfiles);
+router.get("/getProfiles", loginRequired, db.getProfiles);
+router.post("/edit", db.editUserProfile);
 
 module.exports = router;
