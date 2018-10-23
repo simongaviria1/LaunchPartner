@@ -1,9 +1,3 @@
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'client/build'))); //this is the only thing that's different - 'client/build'
-
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -39,7 +33,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'client/build'))); //this is the only thing that's different - 'client/build'
 
 // view engine setup
 
