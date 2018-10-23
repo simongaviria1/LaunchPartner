@@ -1,8 +1,4 @@
-DROP DATABASE IF EXISTS launchPartner;
 CREATE DATABASE launchPartner;
-
-\c launchPartner;
-
 
 DROP TABLE IF EXISTS users;
 
