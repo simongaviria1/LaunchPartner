@@ -1,60 +1,75 @@
 import React, {Component} from 'react';
-import {Route, Redirect, BrowserRouter as Router} from 'react-router-dom'
+import {Route, Redirect, Switch} from 'react-router-dom'
 
 import Profile from './Components/Profile'
 import ProfileEdit from './Components/ProfileEdit'
 import Dashboard from './Components/Dashboard'
 import Login from './Components/UserAuth/Login'
+import Register from './Components/UserAuth/Register'
 
 import './Style/gen.css'
+import './Style/Profile.css'
+
 import SideNav, {Toggle, Nav, NavItem, NavIcon, NavText} from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
+import axios from 'axios'
 class App extends Component {
 
   constructor() {
     super();
     this.state = {
       user: null,
-      username: 'simongaviria',
-      bio: 'I am a developerI am a developerI am a developerI am a developerI am a developer' +
-          'I am a developerI am a developerI am a developerI am a developerI am a developer' +
-          'I am a developerI am a developerI am a developerI am a developerI am a developer' +
-          'I am a developerI am a developerI am a developerI am a developerI am a developer' +
-          'I am a developerI am a developerI am a developerI am a developerI am a developer' +
-          'I am a developerI am a developerI am a developerI am a developerI am a developer' +
-          'I am a developerI am a developerI am a developerI am a developerI am a developer' +
-          'I am a developerI am a developerI am a developerI am a developerI am a developer' +
-          'I am a developerI am a developerI am a developerI am a developerI am a developer' +
-          'I am a developerI am a developerI am a developerI am a developerI am a developer' +
-          'I am a developerI am a developerI am a developerI am a developerI am a developer' +
-          'I am a developerI am a developerI am a developer',
-      profilePic: 'https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/44225876_10160995280085646_6176365' +
-          '99475208192_o.jpg?_nc_cat=107&_nc_ht=scontent-lga3-1.xx&oh=70b52779e598b14e43028' +
-          'df0ed6376ad&oe=5C5023C4',
       edit: false
     }
   }
 
-  handleLogin = () => {
+  logOut = () => {
     const {user} = this.state;
-    return (user
-      ? <Redirect to='/dashboard'/>
-      : <Redirect to='/login'/>)
+    axios
+      .get("/users/logout")
+      .then(res => {
+        this.setState({user: null});
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  // functions passed as Props
+  UserFound = userData => {
+    this.setState({user: userData});
+  };
+
+  handleLogin = () => {
+    const {user} = this.state
+    if (user) {
+      return <Redirect to='/'/>
+    } else {
+      return <Login UserFound={this.UserFound}/>
+    }
   }
 
-  renderLogin = () => {
-    return <Login/>
+  handleRegisterUser = () => {
+    const {user} = this.state;
+    if (user) {
+      return <Redirect to='/'/>
+    } else {
+      return (<Register setUser={this.UserFound}/>)
+    }
   }
 
   renderProfile = () => {
-    const {username, bio, profilePic, edit} = this.state
-    return <Profile
-      username={username}
-      profilePic={profilePic}
-      bio={bio}
-      edit={edit}
-      toggleEdit={this.toggleEdit}/>
+    const {user, loading, edit} = this.state
+    if (!user) {
+      return <Redirect to='/login'/>
+    } else {
+      return (<Profile logOut={this.logOut}
+        user={user}
+        logOut={this.logOut}
+        toggleEdit={this.toggleEdit}
+        edit={edit}/>)
+    }
   }
 
   renderDashboard = () => {
@@ -73,51 +88,14 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
-        <Route
-          render={({location, history}) => (
-          <React.Fragment>
-          {this.state.user ?   <SideNav 
-            id='nav'
-              onSelect={(selected) => {
-              const to = '/' + selected;
-              if (location.pathname !== to) {
-                history.push(to);
-              }
-            }}>
-              <SideNav.Toggle/>
-              <SideNav.Nav defaultSelected="dash">
-                <NavItem eventKey="dashboard">
-                  <NavIcon>
-                    <i class="fas fa-home"></i>
-                  </NavIcon>
-                  <NavText>
-                    Dashboard
-                  </NavText>
-                </NavItem>
-                <NavItem eventKey="profile">
-                  <NavIcon>
-                  <i class="fas fa-user"></i>
-                  </NavIcon>
-                  <NavText>
-                    Profile
-                  </NavText>
-                </NavItem>
-              </SideNav.Nav>
-            </SideNav>: ''}
-            <main>
-              <Route exact path="/" component={this.handleLogin}/>
-              <Route path="/dashboard" component={this.renderDashboard}/>
-              <Route path="/profile" component={this.renderProfile}/>
-              <Route path="/edit" component={this.renderProfileEdit}/>
-              <Route path="/login" component={this.renderLogin}/>
-            </main>
-          </React.Fragment>
-        )}/>
-      </Router>
-    // <Router>   <div>     <Route exact path="/" component={this.handleLogin}/>
-    // <Route path="/dashboard" component={this.renderDashboard}/>     <Route
-    // path="/login" component={this.renderLogin}/>   </div> </Router>
+      <Switch>
+        <Route exact path="/" component={this.renderProfile}/>
+        <Route path="/dashboard" component={this.renderDashboard}/>
+        <Route path="/profile" component={this.renderProfile}/>
+        <Route path="/edit" component={this.renderProfileEdit}/>
+        <Route path="/login" component={this.handleLogin}/>
+        <Route path="/register" component={this.handleRegisterUser}/>
+      </Switch>
     )
   }
 }

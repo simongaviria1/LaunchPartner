@@ -4,10 +4,9 @@ const passport = require("../auth/local");
 
 function createUser(req, res, next) {
     const hash = authHelpers.createHash(req.body.password);
-    console.log("create user hash:", hash);
     db
-        .any(`INSERT INTO users (username, password_digest, email, fullName) 
-      VALUES ($1, $2, $3, $4) RETURNING users.username, users.email, users.fullName`, [req.body.username, hash, req.body.email, req.body.fullName])
+        .any(`INSERT INTO users (username, password_digest, name, bio, profile_pic) 
+      VALUES ($1, $2, $3, $4, $5) RETURNING users.username, users.name, users.bio, users.profile_pic, users.id`, [req.body.username, hash, req.body.name, req.body.bio, req.body.profile_pic])
         .then((data) => {
             res
                 .status(200)
@@ -21,6 +20,10 @@ function createUser(req, res, next) {
         })
 }
 
+function loginUser(req, res, next) {
+    passport.authenticate("local", {})
+}
+
 function logoutUser(req, res, next) {
     req.logout();
     res
@@ -29,7 +32,6 @@ function logoutUser(req, res, next) {
 };
 
 function getUser(req, res, next) {
-    // console.log('get user')
     db
         .one("SELECT * FROM users WHERE username=${username}", {username: req.user.username})
         .then(data => {
@@ -42,14 +44,12 @@ function getUser(req, res, next) {
 // user Profile functions
 function editUserProfile(req, res, next) {
     db
-        .none("UPDATE users SET email=${email}, fullname=${fullName}, stack=${stack}, username=" +
-            "${username} WHERE users.id=${userID}", {
-        email: req.body.email,
-        fullName: req.body.fullName,
-        username: req.body.username,
-        stack: req.body.stack,
-        links: req.body.links,
-        userID: req.user.id
+        .none("UPDATE users SET profile_pic=${user_pic}, name=${user_name}, bio=${user_bio} WHE" +
+            "RE users.id=${userID}", {
+        user_pic: req.body.user_pic,
+        user_name: req.body.user_name,
+        user_bio: req.body.user_bio,
+        userID: req.body.id
     })
         .then(() => {
             res
@@ -57,7 +57,6 @@ function editUserProfile(req, res, next) {
                 .json({message: "successfully updated user"})
         })
         .catch(err => {
-            console.log(`err in editUserProfile`, err)
             res
                 .status(500)
                 .json({message: `FAILED: editUserProfile`})
@@ -73,7 +72,6 @@ function getProfiles(req, res, next) {
                 .json({status: 'success', data: data, message: 'Fetched user Profile'})
         })
         .catch(err => {
-            console.log(`err in getUserProfile`, err)
             res
                 .status(500)
                 .json({message: `FAILED: getUserProfile`})
@@ -82,7 +80,6 @@ function getProfiles(req, res, next) {
 
 function getUserID(req, res, next) {
     db.catch(err => {
-        console.log(`err fetching userID`, err)
         res
             .status(500)
             .json({message: `error getting userid`})
@@ -91,6 +88,7 @@ function getUserID(req, res, next) {
 
 module.exports = {
     createUser,
+    loginUser,
     logoutUser,
     getUser,
     getProfiles,

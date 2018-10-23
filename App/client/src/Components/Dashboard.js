@@ -2,68 +2,54 @@ import React, {Component} from 'react';
 import {Route, Redirect} from 'react-router'
 
 import ProfileEdit from './ProfileEdit'
-
+import Nav from './Nav'
 import '../Style/Profile.css'
 
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios'
+
+import '../Style/Dashboard.css'
+import '../Style/Profile.css'
 
 class Dashboard extends Component {
     constructor() {
         super();
         this.state = {
-            profiles: [
-                {
-                    username: 'sebas',
-                    bio: 'I am also a dev',
-                    profilePic: 'https://comps.canstockphoto.com/businessman-ready-to-commit-suicide-stock-photos_csp8557263.jpg'
-                }, {
-                    username: 'sebas',
-                    bio: 'I am also a dev',
-                    profilePic: 'https://comps.canstockphoto.com/businessman-ready-to-commit-suicide-stock-photos_csp8557263.jpg'
-                }, {
-                    username: 'sebas',
-                    bio: 'I am also a dev',
-                    profilePic: 'https://comps.canstockphoto.com/businessman-ready-to-commit-suicide-stock-photos_csp8557263.jpg'
-                }, {
-                    username: 'sebas',
-                    bio: 'I am also a dev',
-                    profilePic: 'https://comps.canstockphoto.com/businessman-ready-to-commit-suicide-stock-photos_csp8557263.jpg'
-                }, {
-                    username: 'sebas',
-                    bio: 'I am also a dev',
-                    profilePic: 'https://comps.canstockphoto.com/businessman-ready-to-commit-suicide-stock-photos_csp8557263.jpg'
-                }, {
-                    username: 'sebas',
-                    bio: 'I am also a dev',
-                    profilePic: 'https://comps.canstockphoto.com/businessman-ready-to-commit-suicide-stock-photos_csp8557263.jpg'
-                }
-            ]
+            profiles: []
         }
+    }
+
+    componentDidMount = () => {
+        axios
+            .get('/users/getProfiles')
+            .then(res => {
+                this.setState({profiles: res.data.data})
+            })
     }
 
     render() {
         const {username, profilePic, bio, toggleEdit, edit} = this.props
-
         return (
             <div>
-                <div id='container'>
-                    {this
-                        .state
-                        .profiles
-                        .map(ele => {
-                            console.log(ele)
-                            return (
-                                <Paper elevation={1} >
-                                    <img id='profilePic' src={ele.profilePic} alt='img'/>
-                                    <div id='user_profile'>
-                                        <h1>{ele.username}</h1>
-                                        <p>{ele.bio}</p>
-                                    </div>
-                                </Paper>
-                            )
-                        })
-}
+                <Nav/>
+                <div>
+                    <div id='container'>
+                        {this
+                            .state
+                            .profiles
+                            .map(ele => {
+                                return (
+                                    <Paper elevation={1} className='profile_cards'>
+                                        <img id='profilePic' src={ele.profilePic} alt='img'/>
+                                        <div id='user_profile'>
+                                            <h1>{ele.username}</h1>
+                                            <p>{ele.bio}</p>
+                                        </div>
+                                    </Paper>
+                                )
+                            })}
+                    </div>
                 </div>
             </div>
         )
@@ -71,16 +57,3 @@ class Dashboard extends Component {
 }
 
 export default Dashboard;
-{/* <Paper elevation={1}>
-                             <img id='profilePic' src={profilePic}/>
-                             <div id='user_profile'>
-                                 <h1>{username}</h1>
-                                 <p>{bio}</p>
-                             </div>
-
-
-                            <button onClick={toggleEdit}>
-                                Edit Profile</button>
-                        </Paper>
-                    </div>} */
-}
